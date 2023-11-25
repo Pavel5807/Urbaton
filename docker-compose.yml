@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  postgres:
+    container_name: urbatron-postgres
+    image: postgres:15.4
+    restart: always
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=0000
+    ports:
+      - "5432:5432"
+
+  backend-api:
+    container_name: urbatron-backend-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "5272:80"
+      - "7262:443"
