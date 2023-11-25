@@ -6,9 +6,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
-COPY "Urbatron.csproj" "Urbatron.csproj"
+COPY "Urbaton.csproj" "Urbaton.csproj"
 
-RUN dotnet restore "Urbatron.csproj"
+RUN dotnet restore "Urbaton.csproj"
 
 COPY . .
 WORKDIR /src
@@ -19,4 +19,4 @@ FROM build AS publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Urbatron.dll"]
+ENTRYPOINT ["dotnet", "Urbaton.dll"]
