@@ -24,7 +24,7 @@ public class ParkingController : ControllerBase
         return Ok(ParkingsToDTOs(parkings));
     }
 
-    [HttpGet]
+    [HttpGet("/filter")]
     public IActionResult GetParkingsByFilter([FromQuery] ParkingLotType lotType, [FromQuery] bool accessibleEnviroment)
     {
         var parkings = _repository.GetByFliter(lotType, accessibleEnviroment);

@@ -6,11 +6,37 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Urbaton.Migrations
 {
     /// <inheritdoc />
-    public partial class Initmigration : Migration
+    public partial class Initdatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    DeviceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LotType = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.DeviceId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ParkingFidback",
+                columns: table => new
+                {
+                    ParkingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Creation = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParkingFidback", x => new { x.ParkingId, x.UserId, x.Creation });
+                });
+
             migrationBuilder.CreateTable(
                 name: "PlacemarkLookAt",
                 columns: table => new
@@ -52,7 +78,7 @@ namespace Urbaton.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     SecurityCameras = table.Column<bool>(type: "boolean", nullable: false),
                     PlacemarkName = table.Column<string>(type: "text", nullable: false),
                     PlacemarkDescription = table.Column<string>(type: "text", nullable: false)
@@ -73,9 +99,8 @@ namespace Urbaton.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    Charging = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     AccessibleEnviroment = table.Column<bool>(type: "boolean", nullable: false),
                     BasePrice = table.Column<double>(type: "double precision", nullable: false),
                     ParkingId = table.Column<Guid>(type: "uuid", nullable: true)
@@ -109,6 +134,12 @@ namespace Urbaton.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "ParkingFidback");
+
             migrationBuilder.DropTable(
                 name: "ParkingLots");
 

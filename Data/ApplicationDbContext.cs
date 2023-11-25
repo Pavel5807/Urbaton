@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Urbaton.Models;
 
 namespace Urbaton.Data;
@@ -12,10 +13,10 @@ public class ApplicationDbContext : DbContext
         _connectionString = configuration.GetConnectionString("ParkingDB") ?? throw new ArgumentException("Connection string not found");
     }
 
+    public DbSet<Account> Accounts { get; internal set; }
     public DbSet<Parking> Parkings { get; set; }
     public DbSet<ParkingLot> ParkingLots { get; set; }
     public DbSet<Placemark> Placemarks { get; set; }
-    public DbSet<Account> Accounts { get; internal set; }
     public DbSet<ParkingFeedback> ParkingFidback { get; internal set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -25,10 +26,55 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Placemark>().HasKey(x => new { x.Name, x.Description });
-        modelBuilder.Entity<PlacemarkLookAt>().HasKey(x => new { x.Latitude, x.Longitude });
-        modelBuilder.Entity<Account>().HasKey(x => x.DeviceId);
-        modelBuilder.Entity<ParkingFeedback>().HasKey(x => new { x.ParkingId, x.UserId, x.Creation });
+        modelBuilder.Entity<Account>(entityBuilder =>
+        {
+            entityBuilder.HasKey(x => x.DeviceId);
+        });
+
+        modelBuilder.Entity<Parking>(entityBuilder =>
+        {
+            entityBuilder.HasKey(parking => parking.Id);
+            entityBuilder.Property(parking => parking.Type)
+                .HasConversion(new EnumToStringConverter<ParkingType>());
+        });
+
+        modelBuilder.Entity<ParkingFeedback>(entityBuilder =>
+        {
+            entityBuilder.HasKey(x => new
+            {
+                x.ParkingId,
+                x.UserId,
+                x.Creation
+            });
+        });
+
+        modelBuilder.Entity<ParkingLot>(entityBuilder =>
+        {
+            entityBuilder.HasKey(x => x.Id);
+            entityBuilder.Property(x => x.Status)
+                .HasConversion(new EnumToStringConverter<ParkingLotStatus>());
+            entityBuilder.Property(x => x.Type)
+                .HasConversion(new EnumToStringConverter<ParkingLotType>());
+        });
+
+        modelBuilder.Entity<Placemark>(entityBuilder =>
+        {
+            entityBuilder.HasKey(x => new
+            {
+                x.Name,
+                x.Description
+            });
+        });
+
+        modelBuilder.Entity<PlacemarkLookAt>(entityBuilder =>
+        {
+            entityBuilder.HasKey(x => new
+            {
+                x.Latitude,
+                x.Longitude
+            });
+        });
+
         base.OnModelCreating(modelBuilder);
     }
 }

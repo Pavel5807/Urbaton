@@ -2,5 +2,6 @@ namespace Urbaton.Models;
 
 public enum ParkingType
 {
-    Underground
+    Underground,
+    Street
 }
