@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Urbaton.Models;
 using Urbaton.Repositories;
 
 namespace Urbaton.Controllers;
@@ -12,6 +13,12 @@ public class AccountController : ControllerBase
     public AccountController(IParkingRepository repository)
     {
         _repository = repository;
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok(_repository.GetAccounts());
     }
 
     [HttpPost]

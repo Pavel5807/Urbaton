@@ -17,6 +17,16 @@ public class ParkingRepository : IParkingRepository
         _context.Add(parking);
     }
 
+    public void Add(Account account)
+    {
+        _context.Add(account);
+    }
+
+    public void Add(ParkingFeedback feedback)
+    {
+        _context.Add(feedback);
+    }
+
     public void CloseBooking(Guid parkingId, Guid lotId)
     {
         var parking = _context.Parkings.FirstOrDefault(x => x.Id == parkingId);
@@ -35,9 +45,30 @@ public class ParkingRepository : IParkingRepository
         return _context.Parkings.ToList();
     }
 
+    public IEnumerable<Account> GetAccounts()
+    {
+        return _context.Accounts.ToList();
+    }
+
+    public IEnumerable<Parking> GetByFliter(ParkingLotType lotType, bool charging, bool accessibleEnviroment)
+    {
+        return _context.Parkings
+            .Where(x =>
+                x.Lots.Any(l => l.Type == lotType
+                    && l.Charging == charging
+                    && l.AccessibleEnviroment == accessibleEnviroment
+                    && l.Status == ParkingLotStatus.Free))
+            .ToList();
+    }
+
     public Parking? GetById(Guid parkingId)
     {
         return _context.Parkings.FirstOrDefault(x => x.Id == parkingId);
+    }
+
+    public IEnumerable<ParkingFeedback> GetFeedbackByGuid(Guid parkingId)
+    {
+        return _context.ParkingFidback.Where(x => x.ParkingId == parkingId).ToList();
     }
 
     public void OpenBooking(Guid parkingId, Guid lotId, Guid userId)

@@ -9,9 +9,10 @@ public interface IParkingRepository
     void Add(ParkingFeedback parking);
     void CloseBooking(Guid parkingId, Guid lotId);
     IEnumerable<Parking> Get();
+    IEnumerable<Account> GetAccounts();
     IEnumerable<Parking> GetByFliter(ParkingLotType lotType, bool charging, bool accessibleEnviroment);
     Parking? GetById(Guid parkingId);
-    void GetFeedbackByGuid(Guid parkingId);
+    IEnumerable<ParkingFeedback> GetFeedbackByGuid(Guid parkingId);
     void OpenBooking(Guid parkingId, Guid lotId, Guid userId);
     void Save();
 }

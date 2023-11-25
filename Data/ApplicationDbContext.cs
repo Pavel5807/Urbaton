@@ -15,6 +15,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Parking> Parkings { get; set; }
     public DbSet<ParkingLot> ParkingLots { get; set; }
     public DbSet<Placemark> Placemarks { get; set; }
+    public DbSet<Account> Accounts { get; internal set; }
+    public DbSet<ParkingFeedback> ParkingFidback { get; internal set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
