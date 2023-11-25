@@ -50,12 +50,11 @@ public class ParkingRepository : IParkingRepository
         return _context.Accounts.ToList();
     }
 
-    public IEnumerable<Parking> GetByFliter(ParkingLotType lotType, bool charging, bool accessibleEnviroment)
+    public IEnumerable<Parking> GetByFliter(ParkingLotType lotType, bool accessibleEnviroment)
     {
         return _context.Parkings
             .Where(x =>
                 x.Lots.Any(l => l.Type == lotType
-                    && l.Charging == charging
                     && l.AccessibleEnviroment == accessibleEnviroment
                     && l.Status == ParkingLotStatus.Free))
             .ToList();

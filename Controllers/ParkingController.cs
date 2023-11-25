@@ -25,9 +25,9 @@ public class ParkingController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetParkingsByFilter([FromQuery] ParkingLotType lotType, [FromQuery] bool charging, [FromQuery] bool accessibleEnviroment)
+    public IActionResult GetParkingsByFilter([FromQuery] ParkingLotType lotType, [FromQuery] bool accessibleEnviroment)
     {
-        var parkings = _repository.GetByFliter(lotType, charging, accessibleEnviroment);
+        var parkings = _repository.GetByFliter(lotType, accessibleEnviroment);
 
         return Ok(ParkingsToDTOs(parkings));
     }
@@ -116,7 +116,6 @@ public class ParkingController : ControllerBase
         return lots.Where(l => l.Status is ParkingLotStatus.Free).Select(l => new ParkingLotDTO()
         {
             AccessibleEnvironment = l.AccessibleEnviroment,
-            Charging = l.Charging,
             Id = l.Id,
             Price = k * l.BasePrice,
             Status = l.Status,
