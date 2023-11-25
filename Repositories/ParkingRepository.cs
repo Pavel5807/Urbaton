@@ -1,7 +1,7 @@
-using Urbatron.Data;
-using Urbatron.Models;
+using Urbaton.Data;
+using Urbaton.Models;
 
-namespace Urbatron.Repositories;
+namespace Urbaton.Repositories;
 
 public class ParkingRepository : IParkingRepository
 {

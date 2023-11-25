@@ -1,5 +1,8 @@
-namespace Urbatron.Models;
+namespace Urbaton.Models;
 
 public enum ParkingLotType
 {
+    Personal,
+    Electric,
+    Truk
 }

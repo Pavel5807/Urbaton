@@ -1,4 +1,4 @@
-namespace Urbatron.Models;
+namespace Urbaton.Models;
 
 public enum ParkingType
 {

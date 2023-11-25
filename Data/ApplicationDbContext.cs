@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Urbatron.Models;
+using Urbaton.Models;
 
-namespace Urbatron.Data;
+namespace Urbaton.Data;
 
 public class ApplicationDbContext : DbContext
 {

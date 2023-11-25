@@ -1,4 +1,4 @@
-namespace Urbatron.Models.DTOs;
+namespace Urbaton.Models.DTOs;
 
 public class ParkingDTO
 {

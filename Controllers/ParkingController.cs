@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Urbatron.Models;
-using Urbatron.Models.DTOs;
-using Urbatron.Repositories;
+using Urbaton.Models;
+using Urbaton.Models.DTOs;
+using Urbaton.Repositories;
 
-namespace Urbatron.Controllers;
+namespace Urbaton.Controllers;
 
 [ApiController]
 [Route("api/[Controller]")]
@@ -20,6 +20,14 @@ public class ParkingController : ControllerBase
     public IActionResult GetParkings()
     {
         var parkings = _repository.Get();
+
+        return Ok(ParkingsToDTOs(parkings));
+    }
+
+    [HttpGet]
+    public IActionResult GetParkingsByFilter([FromQuery] ParkingLotType lotType, [FromQuery] bool charging, [FromQuery] bool accessibleEnviroment)
+    {
+        var parkings = _repository.GetByFliter(lotType, charging, accessibleEnviroment);
 
         return Ok(ParkingsToDTOs(parkings));
     }
@@ -60,6 +68,21 @@ public class ParkingController : ControllerBase
     {
         _repository.Add(parking);
         _repository.Save();
+        return Ok();
+    }
+
+    [HttpPost("/feedback")]
+    public IActionResult CreateFeedback(ParkingFeedback feedback)
+    {
+        _repository.Add(feedback);
+        return Ok();
+    }
+
+    [HttpGet("/feedback")]
+    public IActionResult GetFeedback(Guid parkingId)
+    {
+        _repository.GetFeedbackByGuid(parkingId);
+
         return Ok();
     }
 

@@ -1,5 +1,5 @@
-using Urbatron.Data;
-using Urbatron.Repositories;
+using Urbaton.Data;
+using Urbaton.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
