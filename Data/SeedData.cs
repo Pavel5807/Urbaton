@@ -5,10 +5,8 @@ namespace MvcMovie.Models;
 
 public static class SeedData
 {
-    public static void Initialize(IConfiguration configuration)
+    public static void Initialize(ApplicationDbContext context)
     {
-        using var context = new ApplicationDbContext(configuration);
-
         InitializeAccounts(context);
         InitializeParkings(context);
         InitializeParkingFidbacks(context);

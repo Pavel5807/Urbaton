@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using MvcMovie.Models;
 using Urbaton.Data;
 using Urbaton.Repositories;
@@ -25,6 +26,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
 
-SeedData.Initialize(app.Configuration);
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+    SeedData.Initialize(db);
+}
 
 app.Run();
