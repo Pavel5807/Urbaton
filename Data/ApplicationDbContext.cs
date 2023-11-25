@@ -27,7 +27,8 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<Placemark>().HasKey(x => new { x.Name, x.Description });
         modelBuilder.Entity<PlacemarkLookAt>().HasKey(x => new { x.Latitude, x.Longitude });
-
+        modelBuilder.Entity<Account>().HasKey(x => x.DeviceId);
+        modelBuilder.Entity<ParkingFeedback>().HasKey(x => new { x.ParkingId, x.UserId, x.Creation });
         base.OnModelCreating(modelBuilder);
     }
 }
