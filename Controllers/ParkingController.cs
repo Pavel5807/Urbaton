@@ -32,7 +32,7 @@ public class ParkingController : ControllerBase
         return Ok(ParkingsToDTOs(parkings));
     }
 
-    [HttpGet("{id}/lots")]
+    [HttpGet("{parkingId}/lots")]
     public IActionResult GetLotsByParkingId(Guid parkingId)
     {
         var parking = _repository.GetById(parkingId);
@@ -75,15 +75,14 @@ public class ParkingController : ControllerBase
     public IActionResult CreateFeedback(ParkingFeedback feedback)
     {
         _repository.Add(feedback);
+        _repository.Save();
         return Ok();
     }
 
     [HttpGet("/feedback")]
     public IActionResult GetFeedback(Guid parkingId)
     {
-        _repository.GetFeedbackByGuid(parkingId);
-
-        return Ok();
+        return Ok(_repository.GetFeedbackByGuid(parkingId));
     }
 
     private static IEnumerable<ParkingDTO> ParkingsToDTOs(IEnumerable<Parking> parkings)
@@ -95,7 +94,7 @@ public class ParkingController : ControllerBase
             Placemark = p.Placemark,
             SecurityCameras = p.SecurityCameras,
             Type = p.Type,
-            Workload = p.Lots.Count(x => x.Status is ParkingLotStatus.Booked) / p.Lots.Count()
+            Workload = (double)p.Lots.Count(x => x.Status is ParkingLotStatus.Booked) / p.Lots.Count()
         });
     }
 

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Urbaton.Data;
 using Urbaton.Models;
 
@@ -14,22 +15,25 @@ public class ParkingRepository : IParkingRepository
 
     public void Add(Parking parking)
     {
-        _context.Add(parking);
+        _context.Parkings.Add(parking);
     }
 
     public void Add(Account account)
     {
-        _context.Add(account);
+        _context.Accounts.Add(account);
     }
 
     public void Add(ParkingFeedback feedback)
     {
-        _context.Add(feedback);
+        _context.ParkingFidback.Add(feedback);
     }
 
     public void CloseBooking(Guid parkingId, Guid lotId)
     {
-        var parking = _context.Parkings.FirstOrDefault(x => x.Id == parkingId);
+        var parking = _context.Parkings
+            .Include(x => x.Lots)
+            .Include(x => x.Placemark)
+            .FirstOrDefault(x => x.Id == parkingId);
         var lot = parking?.Lots.FirstOrDefault(x => x.Id == lotId);
 
         if (lot is null)
@@ -42,7 +46,10 @@ public class ParkingRepository : IParkingRepository
 
     public IEnumerable<Parking> Get()
     {
-        return _context.Parkings.ToList();
+        return _context.Parkings
+            .Include(x => x.Lots)
+            .Include(x => x.Placemark)
+            .ToList();
     }
 
     public IEnumerable<Account> GetAccounts()
@@ -53,6 +60,8 @@ public class ParkingRepository : IParkingRepository
     public IEnumerable<Parking> GetByFliter(ParkingLotType lotType, bool accessibleEnviroment)
     {
         return _context.Parkings
+            .Include(x => x.Lots)
+            .Include(x => x.Placemark)
             .Where(x =>
                 x.Lots.Any(l => l.Type == lotType
                     && l.AccessibleEnviroment == accessibleEnviroment
@@ -62,17 +71,25 @@ public class ParkingRepository : IParkingRepository
 
     public Parking? GetById(Guid parkingId)
     {
-        return _context.Parkings.FirstOrDefault(x => x.Id == parkingId);
+        return _context.Parkings
+            .Include(x => x.Lots)
+            .Include(x => x.Placemark)
+            .FirstOrDefault(x => x.Id == parkingId);
     }
 
     public IEnumerable<ParkingFeedback> GetFeedbackByGuid(Guid parkingId)
     {
-        return _context.ParkingFidback.Where(x => x.ParkingId == parkingId).ToList();
+        return _context.ParkingFidback
+            .Where(x => x.ParkingId == parkingId)
+            .ToList();
     }
 
     public void OpenBooking(Guid parkingId, Guid lotId, Guid userId)
     {
-        var parking = _context.Parkings.FirstOrDefault(x => x.Id == parkingId);
+        var parking = _context.Parkings
+            .Include(x => x.Lots)
+            .Include(x => x.Placemark)
+            .FirstOrDefault(x => x.Id == parkingId);
         var lot = parking?.Lots.FirstOrDefault(x => x.Id == lotId);
 
         if (lot is null)
