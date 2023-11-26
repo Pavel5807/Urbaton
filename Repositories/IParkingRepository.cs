@@ -12,6 +12,7 @@ public interface IParkingRepository
     IEnumerable<Account> GetAccounts();
     IEnumerable<Parking> GetByFliter(ParkingLotType lotType, bool accessibleEnviroment);
     Parking? GetById(Guid parkingId);
+    IEnumerable<Parking> GetByLocation(int lantitude, int longitude);
     IEnumerable<ParkingFeedback> GetFeedbackByGuid(Guid parkingId);
     void OpenBooking(Guid parkingId, Guid lotId, Guid userId);
     void Save();

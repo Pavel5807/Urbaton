@@ -24,6 +24,13 @@ public class ParkingController : ControllerBase
         return Ok(ParkingsToDTOs(parkings));
     }
 
+    [HttpGet("/filtre")]
+    public IActionResult GetPartingsByLocation([FromQuery] int lantitude, [FromQuery] int longitude)
+    {
+        var parkings = _repository.GetByLocation(lantitude, longitude);
+        return Ok(ParkingsToDTOs(parkings));
+    }
+
     [HttpGet("/filter")]
     public IActionResult GetParkingsByFilter([FromQuery] ParkingLotType lotType, [FromQuery] bool accessibleEnviroment)
     {

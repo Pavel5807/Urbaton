@@ -77,6 +77,17 @@ public class ParkingRepository : IParkingRepository
             .FirstOrDefault(x => x.Id == parkingId);
     }
 
+    public IEnumerable<Parking> GetByLocation(int lantitude, int longitude)
+    {
+        return _context.Parkings
+            .Include(x => x.Lots)
+            .Include(x => x.Placemark)
+            .ThenInclude(x => x.LookAt)
+            .OrderBy(x => Math.Pow(x.Placemark.LookAt.Latitude - lantitude, 2) + Math.Pow(x.Placemark.LookAt.Longitude - longitude, 2))
+            .Take(10)
+            .ToList();
+    }
+
     public IEnumerable<ParkingFeedback> GetFeedbackByGuid(Guid parkingId)
     {
         return _context.ParkingFidback
