@@ -28,8 +28,9 @@ namespace Urbaton.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("LotType")
-                        .HasColumnType("integer");
+                    b.Property<string>("LotType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("DeviceId");
 

@@ -16,7 +16,7 @@ namespace Urbaton.Migrations
                 columns: table => new
                 {
                     DeviceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LotType = table.Column<int>(type: "integer", nullable: false)
+                    LotType = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -12,7 +12,7 @@ using Urbaton.Data;
 namespace Urbaton.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231125193541_Init database")]
+    [Migration("20231126021703_Init database")]
     partial class Initdatabase
     {
         /// <inheritdoc />
@@ -31,8 +31,9 @@ namespace Urbaton.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("LotType")
-                        .HasColumnType("integer");
+                    b.Property<string>("LotType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("DeviceId");
 

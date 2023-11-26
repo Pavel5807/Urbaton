@@ -13,11 +13,11 @@ public class ApplicationDbContext : DbContext
         _connectionString = configuration.GetConnectionString("ParkingDB") ?? throw new ArgumentException("Connection string not found");
     }
 
-    public DbSet<Account> Accounts { get; internal set; }
+    public DbSet<Account> Accounts { get; set; }
     public DbSet<Parking> Parkings { get; set; }
     public DbSet<ParkingLot> ParkingLots { get; set; }
     public DbSet<Placemark> Placemarks { get; set; }
-    public DbSet<ParkingFeedback> ParkingFidback { get; internal set; }
+    public DbSet<ParkingFeedback> ParkingFidback { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -29,6 +29,8 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Account>(entityBuilder =>
         {
             entityBuilder.HasKey(x => x.DeviceId);
+            entityBuilder.Property(x => x.LotType)
+                .HasConversion(new EnumToStringConverter<ParkingLotType>());
         });
 
         modelBuilder.Entity<Parking>(entityBuilder =>
